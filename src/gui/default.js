@@ -43,3 +43,11 @@ function createRoom() {
     const message = Model.messages.createRoom(sessionId, {});
     websocket.send(JSON.stringify(message));
 }
+
+function joinRoom() {
+    if (sessionId === undefined) {
+        return;
+    }
+    const message = Model.messages.joinRoom(document.getElementById('roomId').value, sessionId);
+    websocket.send(JSON.stringify(message));
+}

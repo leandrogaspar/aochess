@@ -15,6 +15,7 @@ class Room {
         this.roomConsumerTag = undefined;
         this.ownerId = ownerId;
         this.options = options;
+        this.guestId = undefined;
     }
 
     init() {
@@ -48,6 +49,13 @@ class Room {
     handleFwMessage(ch, message) {
         console.log(`Session[${this.uuid}] - FwMessage rcvd: ${message.content.toString()}`);
         ch.ack(message);
+    }
+
+    joinRoom(guestId) {
+        this.guestId = guestId;
+        this.channel.assertQueue(this.guestId, { durable: false });
+        const roomCreated = Messages.roomJoined(this.roomId);
+        this.channel.sendToQueue(this.guestId, new Buffer(JSON.stringify(roomCreated)));
     }
 }
 

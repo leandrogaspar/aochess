@@ -14,6 +14,7 @@ class Session {
         this.uuid = uuid;
         this.webSocket = webSocket;
         this.channel = undefined;
+        this.roomId = undefined;
 
         webSocket.on('message', (message) => {
             this.handleWsMessage(message);
@@ -54,7 +55,8 @@ class Session {
         }
         switch (messageObj.messageType) {
             case MessageType.CREATE_ROOM:
-                console.log(`Session[${this.uuid}] - Sending room creation request.`);
+            case MessageType.JOIN_ROOM:
+                console.log(`Session[${this.uuid}] - Sending room management request type ${messageObj.messageType}.`);
                 this.sendFwMessage(Queues.ROOM_MNGTM, messageObj);
                 break;
             default:
@@ -72,7 +74,16 @@ class Session {
     }
 
     handleFwMessage(ch, message) {
+        const messageObj = JSON.parse(message.content.toString());
         console.log(`Session[${this.uuid}] - FwMessage rcvd: ${message.content.toString()}`);
+        switch (messageObj.messageType) {
+            case MessageType.ROOM_CREATED:
+            case MessageType.ROOM_JOINED:
+                this.roomId = messageObj.roomId;
+                break;
+            default:
+                break;
+        }
         ch.ack(message);
     }
 

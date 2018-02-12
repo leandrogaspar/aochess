@@ -37,11 +37,18 @@ amqp.connect('amqp://localhost', function (err, conn) {
                         newRoom.close();
                     }
                     break;
+                case MessageType.JOIN_ROOM:
+                    console.log(`RoomManager received join room for roomId ${messageObj.roomId}`);
+                    const room = rooms[messageObj.roomId];
+                    if (room === undefined) {
+                        // send error message?
+                    }
+                    room.joinRoom(messageObj.sessionId);
+                    break;
                 default:
                     console.log(`RoomManager - unknown message type: ${messageObj.messageType}`);
                     break;
             }
-
         });
     });
 });

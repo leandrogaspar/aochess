@@ -1,15 +1,27 @@
 <body>
     <p>Hello world!</p>
 
-    <label for="messageType">MessageType: </label>
-    <input type="text" id="messageType" name="name">
+    <div>
+        <label for="messageType">MessageType: </label>
+        <input type="text" id="messageType" name="name">
 
-    <label for="data">Data: </label>
-    <input type="text" id="data" name="name">
+        <label for="data">Data: </label>
+        <input type="text" id="data" name="name">
 
-    <button onclick="sendMessage()">Send message!</button>
+        <button onclick="sendMessage()">Send message!</button>
+    </div>
 
-    <button onclick="createRoom()">Send create room message!</button>
+    <div>
+        <button onclick="createRoom()">Send create room message!</button>
+    </div>
+
+    <div>
+        <label for="roomId">roomId: </label>
+        <input type="text" id="roomId" name="name">
+
+        <button onclick="joinRoom()">Send join room message!</button>
+    </div>
+
 
     <script src="model.js"></script>
     <script src="default.js"></script>
