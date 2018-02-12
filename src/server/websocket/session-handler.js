@@ -5,12 +5,12 @@ class SessionHandler {
 
     addSession(sessionId, webSocket) {
         this.sessions[sessionId] = webSocket;
-        console.log("After addSession", this.sessions);
+        console.log(`SessionHandler: adding Session[${sessionId}]`);
     }
 
     removeSession(sessionId) {
         delete this.sessions[sessionId];
-        console.log("After removeSession", this.sessions);
+        console.log(`SessionHandler: removing Session[${sessionId}]`);
     }
 
     getSession(sessionId) {
