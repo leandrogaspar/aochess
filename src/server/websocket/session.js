@@ -7,6 +7,7 @@ const Model = require('../../shared/model');
 const Messages = Model.messages;
 const MessageType = Model.MessageType;
 const Queues = Model.Queues;
+const ErrorCode = Model.ErrorCode;
 
 class Session {
     constructor(uuid, webSocket) {
@@ -21,13 +22,13 @@ class Session {
         amqp.connect('amqp://localhost', (err, conn) => {
             if (err) {
                 console.log(`Could not connect to RabbitMQ: ${err}`);
-                this.sendWsMessage(Messages.error(Model.ErrorCode.MSG_BROKER_CONNETION, err));
+                this.sendWsMessage(Messages.error(ErrorCode.MSG_BROKER_CONNETION, err));
                 return;
             }
             conn.createChannel((err, ch) => {
                 if (err) {
                     console.log(`Could not create channel: ${err}`);
-                    this.sendWsMessage(Messages.error(Model.ErrorCode.MSG_BROKER_CHANNEL, err));
+                    this.sendWsMessage(Messages.error(ErrorCode.MSG_BROKER_CHANNEL, err));
                     return;
                 }
                 this.channel = ch;
