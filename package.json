@@ -1,0 +1,17 @@
+{
+  "name": "aochess",
+  "version": "0.0.1",
+  "description": "Backend for realtime chess.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD 2-Clause License",
+  "dependencies": {
+    "chess.js": "^0.10.2",
+    "express": "^4.16.2",
+    "uuid": "^3.2.1",
+    "ws": "^4.0.0"
+  }
+}
