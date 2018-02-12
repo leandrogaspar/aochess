@@ -33,8 +33,8 @@ class Session {
                 }
                 this.channel = ch;
 
-                ch.assertQueue(this.uuid, { exclusive: true });
-                ch.consume(this.uuid, (message) => this.handleFwMessage(ch, message), { noAck: true });
+                ch.assertQueue(this.uuid, { durable: false });
+                ch.consume(this.uuid, (message) => this.handleFwMessage(ch, message));
 
                 ch.assertQueue(Queues.ROOM_MNGTM, { durable: false });
             });
@@ -72,8 +72,8 @@ class Session {
     }
 
     handleFwMessage(ch, message) {
-        console.log(`Session[${this.uuid}] - FwMessage rcvd: ${message}`);
-        ch.ack(msg);
+        console.log(`Session[${this.uuid}] - FwMessage rcvd: ${message.content.toString()}`);
+        ch.ack(message);
     }
 
     sendFwMessage(queue, message) {

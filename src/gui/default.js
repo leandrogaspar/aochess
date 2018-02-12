@@ -12,7 +12,6 @@ websocket.onclose = function (reason) {
 
 websocket.onopen = function () {
     console.log('Websocket open!');
-    websocket.send('Hello world!');
 }
 
 websocket.onerror = function (err) {

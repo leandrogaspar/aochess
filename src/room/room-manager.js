@@ -1,11 +1,16 @@
 'use strict';
 // 3rd party
 const amqp = require('amqplib/callback_api');
+const uuidv4 = require('uuid/v4');
 
 // our requires
 const Model = require('../shared/model');
 const Messages = Model.messages;
+const MessageType = Model.MessageType;
 const Queues = Model.Queues;
+const Room = require('./room');
+
+const rooms = {};
 
 amqp.connect('amqp://localhost', function (err, conn) {
     if (err) {
@@ -19,8 +24,24 @@ amqp.connect('amqp://localhost', function (err, conn) {
         console.log('Waiting for ROOM_MNGTM messages...');
         ch.consume(Queues.ROOM_MNGTM, (message) => {
             const messageObj = JSON.parse(message.content.toString());
-            console.log(messageObj);
-            ch.ack(message);
+            console.log(`RoomManager received message ${messageObj}`);
+
+            switch (messageObj.messageType) {
+                case MessageType.CREATE_ROOM:
+                    const newRoom = new Room(ch, messageObj.sessionId, messageObj.options);
+                    if (newRoom.init()) {
+                        rooms[newRoom.getRoomId()] = newRoom;
+                        console.log(`RoomId[${newRoom.getRoomId()}] created with sucess`);
+                        ch.ack(message); //TODO: this may lead to problems if sendToqueue is somehow called.. Investigate it
+                    } else {
+                        newRoom.close();
+                    }
+                    break;
+                default:
+                    console.log(`RoomManager - unknown message type: ${messageObj.messageType}`);
+                    break;
+            }
+
         });
     });
 });
