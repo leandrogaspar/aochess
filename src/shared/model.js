@@ -3,6 +3,7 @@
         ERROR: 0,
         HELLO_CLIENT: 1,
         CREATE_ROOM: 2,
+        ROOM_CREATED: 3,
     };
 
     const Queues = {
@@ -21,10 +22,18 @@
         };
     }
 
-    function createRoom(sessionId) {
+    function createRoom(sessionId, options) {
         return {
-            messageType: MessageType.HELLO_CLIENT,
-            sessionId: sessionId
+            messageType: MessageType.CREATE_ROOM,
+            sessionId: sessionId,
+            options: options
+        };
+    }
+
+    function roomCreated(roomId) {
+        return {
+            messageType: MessageType.ROOM_CREATED,
+            roomId: roomId
         };
     }
 
@@ -41,5 +50,8 @@
     exports.ErrorCode = ErrorCode;
     exports.messages = {
         helloClient: helloClient,
+        createRoom: createRoom,
+        roomCreated: roomCreated,
+        error: error,
     };
 })(typeof exports === 'undefined' ? this['Model'] = {} : exports);

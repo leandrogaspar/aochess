@@ -17,7 +17,9 @@ amqp.connect('amqp://localhost', function (err, conn) {
         ch.prefetch(1);
         console.log('Waiting for ROOM_MNGTM messages...');
         ch.consume(Model.Queues.ROOM_MNGTM, (message) => {
-            console.log(message); ch.ack(message);
+            const messageObj = JSON.parse(message.content.toString());
+            console.log(messageObj);
+            ch.ack(message);
         });
     });
 });
