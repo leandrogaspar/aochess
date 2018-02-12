@@ -22,3 +22,10 @@ websocket.onmessage = function(message) {
     console.log(`received msg [${message.data}]`);
 }
 
+function sendMessage() {
+    const message = {
+        messageType: document.getElementById('messageType').value,
+        data: document.getElementById('data').value
+    }
+    websocket.send(JSON.stringify(message));
+}

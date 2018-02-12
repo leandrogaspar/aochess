@@ -14,12 +14,12 @@ module.exports.WebSocketServer = function WebSocketServer(httpServer) {
     
       console.log(uuid);
     
-      ws.on('error', () => console.log('errored'));
+      ws.on('error', (err) => console.log('error!', err));
     
-      ws.on('close', () => console.log('closed'));
+      ws.on('close', (reason) => console.log('closed', reason));
     
-      ws.on('message', function wsIncoming(data) {
-        console.log(data);
+      ws.on('message', function wsIncoming(message) {
+        console.log(message);
       });
     
       const helloClient = Messages.helloClient(uuid);
