@@ -1,3 +1,4 @@
+'use strict';
 // server.js
 // 3rd party requires
 const express = require('express');
