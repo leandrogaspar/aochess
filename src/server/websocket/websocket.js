@@ -4,18 +4,18 @@ const WebSocket = require('ws');
 const uuidv4 = require('uuid/v4');
 
 // our requires
-const SessionHandler = require('./session-handler');
+const SessionManager = require('./session-manager');
 const Session = require('./session');
 
 module.exports.WebSocketServer = function WebSocketServer(httpServer) {
     const wsServer = new WebSocket.Server(httpServer);
-    const sessionHandler = new SessionHandler();
+    const sessionManager = new SessionManager();
 
     wsServer.on('connection', function onConnection(ws) {
         const uuid = uuidv4();
 
         const session = new Session(uuid, ws);
-        sessionHandler.addSession(uuid, session);
+        sessionManager.addSession(uuid, session);
 
         // We handle the connection stuff here
         // leave the messages for the Session()
@@ -24,7 +24,7 @@ module.exports.WebSocketServer = function WebSocketServer(httpServer) {
         });
 
         ws.on('close', (reason) => {
-            sessionHandler.removeSession(uuid);
+            sessionManager.removeSession(uuid);
         });
     });
 }

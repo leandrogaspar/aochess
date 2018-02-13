@@ -4,7 +4,8 @@
   "description": "Backend for realtime chess.",
   "main": "index.js",
   "scripts": {
-    "server": "node src/server/server"
+    "server": "node src/server/server",
+    "room-manager": "node src/room/room-manager"
   },
   "author": "",
   "license": "BSD-2-Clause",
