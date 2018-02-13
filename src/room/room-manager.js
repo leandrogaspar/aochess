@@ -42,6 +42,9 @@ amqp.connect('amqp://localhost', function (err, conn) {
                     const room = rooms[messageObj.roomId];
                     if (room === undefined) {
                         // send error message?
+                        console.log('TODO: RoomManager undefined room error!');
+                        ch.ack(message);
+                        return;
                     }
                     room.joinRoom(messageObj.sessionId);
                     break;
