@@ -18,13 +18,13 @@ class Room {
         this.guestId = undefined;
     }
 
-    init() {
+    init(reqId) {
         try {
             this.channel.assertQueue(this.roomId, { durable: false });
             this.channel.consume(this.roomId, (message) => this.handleFwMessage(ch, message));
 
             this.channel.assertQueue(this.ownerId, { durable: false });
-            const roomCreated = Messages.roomCreated(this.roomId);
+            const roomCreated = Messages.roomCreated(reqId, this.roomId);
             this.channel.sendToQueue(this.ownerId, new Buffer(JSON.stringify(roomCreated)));
             console.log('hey');
             return true;
@@ -51,10 +51,10 @@ class Room {
         ch.ack(message);
     }
 
-    joinRoom(guestId) {
+    joinRoom(reqId, guestId) {
         this.guestId = guestId;
         this.channel.assertQueue(this.guestId, { durable: false });
-        const roomCreated = Messages.roomJoined(this.roomId);
+        const roomCreated = Messages.roomJoined(reqId, this.roomId);
         this.channel.sendToQueue(this.guestId, new Buffer(JSON.stringify(roomCreated)));
     }
 }

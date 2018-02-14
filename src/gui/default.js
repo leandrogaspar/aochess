@@ -1,10 +1,6 @@
-console.log('Hello world!');
-
-//Test if we can use our Model..
-console.log(Model.MessageType);
-
 var websocket = new WebSocket('ws://localhost:3000/ws');
 var sessionId = undefined;
+var reqId = 0;
 
 websocket.onclose = function (reason) {
     console.log(`Websocket closed![${reason}]`);
@@ -29,8 +25,10 @@ websocket.onmessage = function (message) {
 }
 
 function sendMessage() {
+    reqId++;
     const message = {
         messageType: document.getElementById('messageType').value,
+        reqId: reqId,
         data: document.getElementById('data').value
     }
     websocket.send(JSON.stringify(message));
@@ -40,7 +38,8 @@ function createRoom() {
     if (sessionId === undefined) {
         return;
     }
-    const message = Model.messages.createRoom(sessionId, {});
+    reqId++;
+    const message = Model.messages.createRoom(reqId, sessionId, {});
     websocket.send(JSON.stringify(message));
 }
 
@@ -48,6 +47,7 @@ function joinRoom() {
     if (sessionId === undefined) {
         return;
     }
-    const message = Model.messages.joinRoom(document.getElementById('roomId').value, sessionId);
+    reqId++;
+    const message = Model.messages.joinRoom(reqId, document.getElementById('roomId').value, sessionId);
     websocket.send(JSON.stringify(message));
 }
