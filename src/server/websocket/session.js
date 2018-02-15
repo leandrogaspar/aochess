@@ -49,6 +49,7 @@ class Session {
         console.log(`Session[${this.uuid}] - WsMessage rcvd: ${message}`);
         try {
             messageObj = JSON.parse(message);
+            messageObj.sessionId = this.uuid;
         } catch (err) {
             console.log(`Session[${this.uuid}] - WsMessage could not parse msg: ${message}`);
             return;
@@ -58,6 +59,10 @@ class Session {
             case MessageType.JOIN_ROOM:
                 console.log(`Session[${this.uuid}] - Sending room management request type ${messageObj.messageType}.`);
                 this.sendFwMessage(Queues.ROOM_MNGTM, messageObj);
+                break;
+            case MessageType.SEND_MESSAGE:
+                console.log(`Session[${this.uuid}] - Sending message.`);
+                this.sendFwMessage(this.roomId, messageObj);
                 break;
             default:
                 console.log(`Session[${this.uuid}] - WsMessage unknown message type: ${messageObj.messageType}`);

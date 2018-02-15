@@ -3,12 +3,12 @@
 
     <div>
         <label for="messageType">MessageType: </label>
-        <input type="text" id="messageType" name="name">
+        <input type="text" id="messageType" name="msgType">
 
         <label for="data">Data: </label>
-        <input type="text" id="data" name="name">
+        <input type="text" id="data" name="data">
 
-        <button onclick="sendMessage()">Send message!</button>
+        <button onclick="sendWsMessage()">Send message!</button>
     </div>
 
     <div>
@@ -17,11 +17,17 @@
 
     <div>
         <label for="roomId">roomId: </label>
-        <input type="text" id="roomId" name="name">
+        <input type="text" id="roomId" name="roomId">
 
         <button onclick="joinRoom()">Send join room message!</button>
     </div>
 
+    <div>
+        <label for="message">roomId: </label>
+        <input type="text" id="message" name="message">
+
+        <button onclick="sendMessage()">Send message!</button>
+    </div>
 
     <script src="model.js"></script>
     <script src="default.js"></script>

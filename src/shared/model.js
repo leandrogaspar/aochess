@@ -6,6 +6,9 @@
         ROOM_CREATED: 3,
         JOIN_ROOM: 4,
         ROOM_JOINED: 5,
+        SEND_MESSAGE: 6,
+        MESSAGE_SENT: 7,
+        NEW_MESSAGE: 8,
     };
 
     const Queues = {
@@ -18,6 +21,7 @@
         ROOM_NOT_FOUND: 2,
         ROOM_FAIL_TO_INIT: 3,
         UNKNOWN_REQUEST: 4,
+        NOT_IN_ROOM: 5,
     }
 
     function helloClient(sessionId) {
@@ -61,6 +65,27 @@
         };
     }
 
+    function sendMessage(reqId, message) {
+        return {
+            messageType: MessageType.SEND_MESSAGE,
+            reqId: reqId,
+            message: message
+        };
+    }
+
+    function messageSent() {
+        return {
+            messageType: MessageType.MESSAGE_SENT
+        };
+    }
+
+    function newMessage(message) {
+        return {
+            messageType: MessageType.NEW_MESSAGE,
+            message: message
+        };
+    }
+
     function error(code, data) {
         return {
             messageType: MessageType.ERROR,
@@ -87,6 +112,9 @@
         roomCreated: roomCreated,
         joinRoom: joinRoom,
         roomJoined: roomJoined,
+        sendMessage: sendMessage,
+        messageSent: messageSent,
+        newMessage: newMessage,
         error: error,
         requestError: requestError,
     };

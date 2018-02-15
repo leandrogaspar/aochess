@@ -24,7 +24,7 @@ websocket.onmessage = function (message) {
     }
 }
 
-function sendMessage() {
+function sendWsMessage() {
     reqId++;
     const message = {
         messageType: document.getElementById('messageType').value,
@@ -49,5 +49,14 @@ function joinRoom() {
     }
     reqId++;
     const message = Model.messages.joinRoom(reqId, document.getElementById('roomId').value, sessionId);
+    websocket.send(JSON.stringify(message));
+}
+
+function sendMessage() {
+    if (sessionId === undefined) {
+        return;
+    }
+    reqId++;
+    const message = Model.messages.sendMessage(reqId, document.getElementById('message').value);
     websocket.send(JSON.stringify(message));
 }
