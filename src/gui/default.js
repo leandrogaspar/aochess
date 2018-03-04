@@ -1,6 +1,7 @@
-var websocket = new WebSocket('ws://localhost:3000/ws');
+const websocket = new WebSocket('ws://localhost:3000/ws');
 var sessionId = undefined;
 var reqId = 0;
+const MessageType = Model.MessageType;
 
 websocket.onclose = function (reason) {
     console.log(`Websocket closed![${reason}]`);
@@ -18,9 +19,22 @@ websocket.onmessage = function (message) {
     console.log(`received msg [${message.data}]`);
     const messageObj = JSON.parse(message.data);
     const messageType = messageObj.messageType;
-    if (messageType === Model.MessageType.HELLO_CLIENT) {
-        sessionId = messageObj.sessionId;
-        console.log(`Session id assigned ${sessionId}`);
+    switch(messageType) {
+        case MessageType.HELLO_CLIENT:
+            sessionId = messageObj.sessionId;
+            log(`Session id assigned ${sessionId}`);
+            break;
+        case MessageType.ROOM_CREATED:
+            log(`Created Room id: ${messageObj.roomId}`);
+            break;
+        case MessageType.ROOM_JOINED:
+            log(`Room id ${messageObj.roomId} joined`);
+            break;
+        case MessageType.NEW_MESSAGE:
+            log("Rcvd message: " + messageObj.message);
+            break;
+        default:
+            break;
     }
 }
 
@@ -59,4 +73,10 @@ function sendMessage() {
     reqId++;
     const message = Model.messages.sendMessage(reqId, document.getElementById('message').value);
     websocket.send(JSON.stringify(message));
+    log("Sent message: " + message.message);
+}
+
+function log(text) {
+    const textArea = document.getElementById("log-area");
+    textArea.innerHTML = textArea.innerHTML + text + "\n";
 }

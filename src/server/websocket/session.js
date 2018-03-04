@@ -89,6 +89,7 @@ class Session {
             default:
                 break;
         }
+        this.sendWsMessage(messageObj);
         ch.ack(message);
     }
 
